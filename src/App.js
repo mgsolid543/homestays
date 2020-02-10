@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Homestay from './components/Homestay';
+import GoogleMapReact from 'google-map-react';
 
 class App extends Component {
 
@@ -22,6 +23,11 @@ class App extends Component {
   }
   
   render() {
+    const center = {
+      lat: -7.797068,
+      lng: 110.371754
+    }
+
     return(
       <div className="app">
         <div className="main">
@@ -33,7 +39,13 @@ class App extends Component {
             })}
           </div>
         </div>
-        <div className="peta"></div>
+        <div className="peta">
+          <GoogleMapReact
+            center={center}
+            zoom={15}
+          >
+          </GoogleMapReact>
+        </div>
       </div>
     );
   }
