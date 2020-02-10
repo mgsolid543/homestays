@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import './App.css';
 import Homestay from './components/Homestay';
 import { Map, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
-import { Icon } from "leaflet";
+//import Marker from './components/Marker';
+//import { Icon } from "leaflet";
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      homestays: []
+      homestays: [],
+      selectedHomestay: null
     };
   }
 
@@ -22,16 +24,33 @@ class App extends Component {
         });
       })
   }
+
+  selectHomestay = (homestay) => {
+    this.setState({
+      selectedHomestay: homestay
+    })
+  }
   
   render() {
-    const skater = new Icon({
-      iconUrl: "./skater.svg",
-      iconSize: [25, 25]
-    });
+    // const skater = new Icon({
+    //   iconUrl: "./skater.svg",
+    //   iconSize: [25, 25]
+    // });
+    
+   
 
-    const center = {
+
+    let center = {
       lat: -7.797068,
       lng: 110.371754
+    }
+
+
+    if (this.state.selectedHomestay) {
+      center = {
+        lat: this.state.selectedHomestay.lat,
+        lng: this.state.selectedHomestay.lng
+      };
     }
 
     return(
@@ -41,7 +60,8 @@ class App extends Component {
             {this.state.homestays.map((homestay) => {
               return <Homestay
                       key={homestay.nama}
-                      homestay={homestay} />
+                      homestay={homestay} 
+                      selectHomestay={this.selectHomestay} />
             })}
           </div>
         </div>
@@ -51,7 +71,7 @@ class App extends Component {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {this.state.homestays.map(homestay => (
+        {/* {this.state.homestays.map(homestay => (
         <Marker
           key={homestay.id}
           position={[
@@ -68,9 +88,24 @@ class App extends Component {
             </Tooltip>
 
         </Marker>
-       
-          
-      ))}
+        ))} */}
+        {this.state.homestays.map((homestay) => {
+            return <Marker
+                      key={homestay.id}
+                      position={[
+                        homestay.lat,
+                        homestay.lng
+                      ]}>
+                      <Popup>
+                        <span><b>{homestay.nama}</b></span>
+                      </Popup>
+
+                      <Tooltip direction='right' offset={[-8, -2]} opacity={1} permanent>
+                                    <span id="selectedHS">Rp {homestay.harga} rb</span>
+                      </Tooltip>
+                                
+                      </Marker>
+        })}
 
 {/* {parkData.features.map(park => (
         <Marker
