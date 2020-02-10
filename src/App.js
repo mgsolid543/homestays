@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Homestay from './components/Homestay';
-import GoogleMapReact from 'google-map-react';
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Icon } from "leaflet";
 
 class App extends Component {
 
@@ -34,17 +35,18 @@ class App extends Component {
           <div className="homestays">
             {this.state.homestays.map((homestay) => {
               return <Homestay
-                      key={homestay.id}
+                      key={homestay.nama}
                       homestay={homestay} />
             })}
           </div>
         </div>
         <div className="peta">
-          <GoogleMapReact
-            center={center}
-            zoom={15}
-          >
-          </GoogleMapReact>
+        <Map center={center} zoom={15}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+    </Map>
         </div>
       </div>
     );
