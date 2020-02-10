@@ -1,0 +1,20 @@
+.homestay {
+    border-color: blue;
+    border-width: ;
+}
+
+.homestay-foto {
+    padding: 10px;
+    margin: 15px;
+    width: 300px;
+    height: 180px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;  
+}
+
+.homestay-judul {
+    font-weight: bold;
+    padding:10px;
+    margin-top: 10px;
+}
