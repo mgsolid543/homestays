@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Homestay from './components/Homestay';
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Map, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import { Icon } from "leaflet";
 
 class App extends Component {
@@ -24,6 +24,11 @@ class App extends Component {
   }
   
   render() {
+    const skater = new Icon({
+      iconUrl: "./skater.svg",
+      iconSize: [25, 25]
+    });
+
     const center = {
       lat: -7.797068,
       lng: 110.371754
@@ -42,10 +47,47 @@ class App extends Component {
         </div>
         <div className="peta">
         <Map center={center} zoom={15}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      />
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {this.state.homestays.map(homestay => (
+        <Marker
+          key={homestay.id}
+          position={[
+            homestay.lat,
+            homestay.lng
+          ]}>
+
+            <Popup >
+              <span><b>{homestay.nama}</b></span>
+            </Popup>
+
+            <Tooltip direction='right' offset={[-8, -2]} opacity={1} permanent>
+                          <span>Rp {homestay.harga} rb</span>
+            </Tooltip>
+
+        </Marker>
+       
+          
+      ))}
+
+{/* {parkData.features.map(park => (
+        <Marker
+          key={park.properties.PARK_ID}
+          position={[
+            park.geometry.coordinates[1],
+            park.geometry.coordinates[0]
+          ]}
+          onClick={() => {
+            setActivePark(park);
+          }}
+        />
+      ))} */}
+
+
+
+
     </Map>
         </div>
       </div>
