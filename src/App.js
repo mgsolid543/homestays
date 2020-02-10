@@ -71,24 +71,7 @@ class App extends Component {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {/* {this.state.homestays.map(homestay => (
-        <Marker
-          key={homestay.id}
-          position={[
-            homestay.lat,
-            homestay.lng
-          ]}>
-
-            <Popup >
-              <span><b>{homestay.nama}</b></span>
-            </Popup>
-
-            <Tooltip direction='right' offset={[-8, -2]} opacity={1} permanent>
-                          <span>Rp {homestay.harga} rb</span>
-            </Tooltip>
-
-        </Marker>
-        ))} */}
+       
         {this.state.homestays.map((homestay) => {
             return <Marker
                       key={homestay.id}
