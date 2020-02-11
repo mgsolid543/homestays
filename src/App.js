@@ -11,7 +11,9 @@ class App extends Component {
     super(props);
     this.state = {
       homestays: [],
-      selectedHomestay: null
+      selectedHomestay: null,
+      allHomestay: [],
+      search: ""
     };
   }
 
@@ -20,7 +22,8 @@ class App extends Component {
       .then(response => response.json())
       .then((data) => {
         this.setState({
-          homestays: data
+          homestays: data,
+          allHomestays: data
         });
       })
   }
@@ -30,21 +33,21 @@ class App extends Component {
       selectedHomestay: homestay
     })
   }
+
+  handleSearch = (event) => {
+    this.setState({
+      search: event.target.value,
+      homestays: this.state.allHomestays.filter((homestay) =>
+        new RegExp(event.target.value, "i").exec(homestay.nama)
+      )
+    })
+  }
   
   render() {
-    // const skater = new Icon({
-    //   iconUrl: "./skater.svg",
-    //   iconSize: [25, 25]
-    // });
-    
-   
-
-
     let center = {
       lat: -7.797068,
       lng: 110.371754
     }
-
 
     if (this.state.selectedHomestay) {
       center = {
@@ -56,6 +59,13 @@ class App extends Component {
     return(
       <div className="app">
         <div className="main">
+          <div className="search">
+            <input type="text"
+                    placeholder="Search..."
+                    value={this.state.search}
+                    onChange={this.handleSearch}
+            />
+          </div>
           <div className="homestays">
             {this.state.homestays.map((homestay) => {
               return <Homestay
@@ -67,46 +77,28 @@ class App extends Component {
         </div>
         <div className="peta">
         <Map center={center} zoom={15}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-       
-        {this.state.homestays.map((homestay) => {
-            return <Marker
-                      key={homestay.id}
-                      position={[
-                        homestay.lat,
-                        homestay.lng
-                      ]}>
-                      <Popup>
-                        <span><b>{homestay.nama}</b></span>
-                      </Popup>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {this.state.homestays.map((homestay) => {
+              return <Marker
+                        key={homestay.id}
+                        position={[
+                          homestay.lat,
+                          homestay.lng
+                        ]}>
+                        <Popup>
+                          <span><b>{homestay.nama}</b></span>
+                        </Popup>
 
-                      <Tooltip direction='right' offset={[-8, -2]} opacity={1} permanent>
-                                    <span id="selectedHS">Rp {homestay.harga} rb</span>
-                      </Tooltip>
-                                
-                      </Marker>
-        })}
-
-{/* {parkData.features.map(park => (
-        <Marker
-          key={park.properties.PARK_ID}
-          position={[
-            park.geometry.coordinates[1],
-            park.geometry.coordinates[0]
-          ]}
-          onClick={() => {
-            setActivePark(park);
-          }}
-        />
-      ))} */}
-
-
-
-
-    </Map>
+                        <Tooltip direction='right' offset={[-8, -2]} opacity={1} permanent>
+                                      <span id="selectedHS">Rp {homestay.harga} rb</span>
+                        </Tooltip>
+                                  
+                        </Marker>
+          })}
+        </Map>
         </div>
       </div>
     );
